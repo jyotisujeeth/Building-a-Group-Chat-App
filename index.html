@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div align="right" style="margin: 10px;"> 
+        <a href="../Login/login.html">
+          <button type="submit" class="btn btn-primary" id="logout" onclick="logout()">Logout</button>
+        </a>
+        
+        <!-- <input type="button" value="Login" />  -->
+      </div>
+    <main>
+        <header>
+            <div class="title">
+                <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQi8RjrTM-2mONqilq2noQCRihzxXPmlPzeaQ&usqp=CAU" width="35px"> -->
+                <h1><i class="fa fa-comment" aria-hidden="true"></i> Chat App</h1>
+            </div>
+            <button type="button" class="btn-header" onclick="show_hide()">
+                <!-- <span>&#8942;</span> -->
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzdCOXFS--DK1OYh21uGPabiEbRgP-0Azaig&usqp=CAU" width="50px">
+            </button>
+        </header>
+        <div class="container">
+            <div class="users-window">
+                <div class="users-head">
+                    <h3><i class="fas fa-users"></i> People</h3>
+                    <h4 class="users-count">3</h4>
+                </div>
+                
+                <div class="users-list">
+                   
+                </div>
+                
+                <div class="groups-head">
+                    <h3><i class="fas fa-comments"></i> Groups </h3>
+                    <a href="#" id="button" class="button"><i class="fa fa-plus" aria-hidden="true" id="aplus"></i></a>
+                    
+                    
+                    <h4 class="groups-count">3</h4>
+                </div>
+                <div class="groups-list" id="groups-list">
+                   
+                </div>
+            </div>
+            
+            <div class="chat-window">
+                <div class="chats">
+                    <!-- <div class="user-join">
+                        <p><b>Jarvis</b> joined the chat</p>
+                    </div> -->
+                    <!-- <div class="message incoming">
+                        
+                    </div>
+                    <div class="message outgoing">
+                        
+                    </div> -->
+                </div>
+                <form id="my-form" onsubmit=" sendmsz(event)">
+                    <div class="user-input">        
+                        <input  type="text" name="message" id="message" placeholder="Type a message ... " required>
+                        <button  class="msg-btn"  id="user-send" type="submit">SEND</button>   
+                    </div>
+                </form>
+                <form onsubmit="sendFile(event)" >
+                    <div style="padding-top: 10px;" class="user-file">
+                        <input type="file" id="file" name="file" class="form-control" placeholder="Send messages"
+                            aria-label="Send messages" aria-describedby="button-addon2" id="msz">
+                            
+                        <button class="btn btn-primary" type="submit" id="buttonsendfile">send file</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <div class="bg-modal">
+        <div class="modal-contents">
+    
+            <div class="close">+</div>
+            <!-- <img src="https://richardmiddleton.me/comic-100.png" alt=""> -->
+    
+            <form action="" id="creatgrp" onsubmit="myFunction()">
+                <input type="text" placeholder="Group Name" name="groupname" class="bgmodalid" id="groupname">
+                <!-- <input type="email" placeholder="E-Mail" class="bgmodalid"> -->
+                <!-- <a href="#" class="button">Submit</a> -->
+                <button class="button">Create Group</button>
+            </form>
+    
+        </div>
+    </div>
+    <div class="users-group" >
+        <div class="users-group-contents" >
+    
+            <div class="close" onclick="closeForm()">+</div>
+            <!-- <li class="users-group-list">od</li>
+            <li class="users-group-list">vaib</li> -->
+            <!-- <p class="users-group-list">od</p>
+            <p class="users-group-list">vaib</p> -->
+            <div id="users-group-list"></div>
+        </div>
+    </div>
+    <div class="addusr">
+        <div class="addusr-contents">
+    
+            <div class="close" onclick="closegrpadd()">+</div>
+            <!-- <img src="https://richardmiddleton.me/comic-100.png" alt=""> -->
+            <!-- onsubmit="closeaddusr()" -->
+            <form action="" id="addusr-grp">
+                <input type="text" placeholder="User Name" name="usrname" class="usrname" id="grpusrname">
+                <!-- <input type="email" placeholder="E-Mail" class="bgmodalid"> -->
+                <!-- <a href="#" class="button">Submit</a> -->
+                <br>
+                <input type="text" placeholder="Group Name" name="groupName" class="groupName" id="groupName">
+                <br>
+                <!-- <label for="makeadmin">Give Admin Access</label><br>
+                <input type="radio" id="html" name="fav_language" value="HTML">
+                <label for="html">Yes</label><br>
+                <input type="radio" id="css" name="fav_language" value="CSS">
+                <label for="css">No</label><br> -->
+                Add as admin:
+                <input type="radio" name="is_admin" class="is_admin" value="Yes" >Yes
+                <input type="radio" name="is_admin" class="is_admin" value="No" >No
+                <br>
+                <button class="button" onclick="addusrtogrp()" >Add user</button>
+            </form>
+            
+        </div>
+    </div>
+    <div id="result"></div>
+    <script>
+        var uwindow=document.querySelector('.users-window');
+        function show_hide(){
+            if(uwindow.style.display=='block'){
+                uwindow.style.display='none';
+            }
+            else{
+                uwindow.style.display='block';
+            }
+        }
+    
+        document.getElementById('button').addEventListener("click", function() {
+            document.querySelector('.bg-modal').style.display = "flex";
+        });
+
+        document.querySelector('.close').addEventListener("click", function() {
+            document.querySelector('.bg-modal').style.display = "none";
+        });
+
+        function openForm() {
+            document.querySelector('.users-group').style.display = "flex";
+        }
+
+        function closeForm() {
+            document.querySelector('.users-group').style.display = "none";
+        }
+
+
+        // document.querySelector('.close').addEventListener("click", function() {
+        //     document.querySelector('.addusr').style.display = "none";
+        // });
+
+        function openadduserform() {
+            document.querySelector('.addusr').style.display = "flex";
+        }
+        
+        function closegrpadd() {
+            document.querySelector('.addusr').style.display = "none";
+        }
+
+        function closeaddusr(){
+            document.querySelector('.addusr').style.display="none";
+        }
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
