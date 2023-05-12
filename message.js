@@ -1,23 +1,30 @@
-const Sequelize = require('sequelize');
+const path = require('path');
 
-const sequelize = require('../util/database');
+const express = require('express');
 
-const Message= sequelize.define("message", {
-    msgid: {
-      type: Sequelize.INTEGER.UNSIGNED,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    Username: {
-      type: Sequelize.STRING(128),
-      allowNull: false,
-    }
-    ,
-    message: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    }
-  });
 
-  module.exports = Message;
+const router = express.Router();
+
+const jwt = require('jsonwebtoken')
+
+const userAuth=require('../middleware/auth');
+const bodyParser = require('body-parser');
+router.use(bodyParser.json())
+router.use(bodyParser.urlencoded({ extended: true }));
+const Message = require('../models/message');
+const User = require('../models/user');
+const messageController = require('../controllers/message');
+
+router.post("/sendmsg/:groupId",userAuth.authenticate,messageController.sendMessage)
+
+router.get("/getmessages",userAuth.authenticate,messageController.getMessages)
+
+
+router.get("/getusers",userAuth.authenticate,messageController.getUsers)
+
+
+router.get("/getgroupmessages/:groupId",userAuth.authenticate,messageController.getGroupMessages)
+
+
+
+module.exports = router;
